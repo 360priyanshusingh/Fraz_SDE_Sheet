@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool helper(vector<vector<char>>&board,int row,int col,string word,int n,int m ,int index){
+        if(word.size() == index) return true;
+
+        if( n==row || row<0 || col<0 || col==m ) return false;
+
+        if(board[row][col]!=word[index] || board[row][col]=='*') return false;
+         
+        char c=board[row][col];
+         board[row][col]='*';
+
+        bool ans1=helper(board,row-1,col,word,n,m,index+1);
+        bool ans2=helper(board,row,col+1,word,n,m,index+1);
+        bool ans3=helper(board,row+1,col,word,n,m,index+1);
+        bool ans4=helper(board,row,col-1,word,n,m,index+1);
+
+        board[row][col]=c; 
+        return ans1 || ans2 || ans3 || ans4 ;
+        
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        int n=board.size();
+        int m=board[0].size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j]==word[0]){
+                    if(helper(board,i,j,word,n,m,0)==true) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+};
